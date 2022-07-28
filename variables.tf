@@ -410,6 +410,12 @@ variable "iam_role_additional_policies" {
   default     = []
 }
 
+variable "bastion_user_arn_for_trusted_relationship" {
+  description = "Bastion user ARN for trusted relationship"
+  type        = string
+  default     = null
+}
+
 # TODO - hopefully this can be removed once the AWS endpoint is named properly in China
 # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1904
 variable "cluster_iam_role_dns_suffix" {

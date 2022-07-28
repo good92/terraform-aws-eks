@@ -245,6 +245,21 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = ["eks.${local.dns_suffix}"]
     }
   }
+
+  # https://aws.amazon.com/premiumsupport/knowledge-center/iam-assume-role-error/
+  # https://www.reddit.com/r/Terraform/comments/hsibxx/dynamic_iam_policy_statements/
+  dynamic "statement" {
+    for_each = var.bastion_user_arn_for_trusted_relationship ? 1 : 0
+    content {
+      sid = "TrustedRelationshipForUser"
+      actions = ["sts:AssumeRole"]
+
+      principals {
+        type        = "AWS"
+        identifiers = [var.bastion_user_arn_for_trusted_relationship]
+      }
+    }
+  }
 }
 
 resource "aws_iam_role" "this" {
